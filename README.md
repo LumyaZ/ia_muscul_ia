@@ -2,7 +2,7 @@
 
 Service Python FastAPI pour la génération de programmes d'entraînement personnalisés avec l'IA.
 
-## 🚀 Fonctionnalités
+## Fonctionnalités
 
 - Génération de programmes d'entraînement personnalisés
 - Intégration avec Ollama (modèles locaux gratuits)
@@ -11,13 +11,13 @@ Service Python FastAPI pour la génération de programmes d'entraînement person
 - Logging détaillé et structuré
 - Tests unitaires et d'intégration complets
 
-## 📋 Prérequis
+## Prérequis
 
 - Python 3.11+
 - Ollama installé et configuré
 - Modèle Llama 2 ou autre modèle compatible
 
-## 🛠️ Installation
+## Installation
 
 ### 1. Cloner le projet
 ```bash
@@ -74,7 +74,7 @@ docker build -t ai-muscul-ia .
 docker run -p 8000:8000 ai-muscul-ia
 ```
 
-## 📚 API Documentation
+## API Documentation
 
 Une fois le service démarré, la documentation est disponible à :
 - **Swagger UI** : http://localhost:8000/docs
@@ -114,7 +114,7 @@ python back_muscul_ia/scripts/test_ai_endpoints.py
 python back_muscul_ia/scripts/test-ollama-direct.py
 ```
 
-## 🔧 Endpoints
+## Endpoints
 
 ### POST /generate-training-program
 Génère un programme d'entraînement personnalisé.
@@ -218,7 +218,7 @@ volumes:
   ollama_data:
 ```
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Problème de connexion à Ollama
 ```bash
@@ -242,7 +242,7 @@ ollama pull llama2
 - Vérifier que le modèle IA génère bien du JSON valide
 - Ajuster les paramètres de température et top_p si nécessaire
 
-## 📝 Logs
+## Logs
 
 Les logs sont disponibles dans la console et incluent :
 - Requêtes reçues
@@ -251,29 +251,29 @@ Les logs sont disponibles dans la console et incluent :
 - Temps de réponse
 - Profils utilisateurs complets
 
-## 📊 Conformité aux blocs
+## Conformité aux blocs
 
 ### C2.2.2 - Tests unitaires
-- ✅ Tests complets du service IA
-- ✅ Tests de parsing JSON
-- ✅ Tests de validation des données
-- ✅ Tests de gestion d'erreurs
+- Tests complets du service IA
+- Tests de parsing JSON
+- Tests de validation des données
+- Tests de gestion d'erreurs
 
 ### C2.2.4 - Tests d'intégration
-- ✅ Tests des endpoints FastAPI
-- ✅ Tests de validation des modèles
-- ✅ Tests de gestion des erreurs HTTP
+- Tests des endpoints FastAPI
+- Tests de validation des modèles
+- Tests de gestion des erreurs HTTP
 
 ### C2.4.1 - Documentation technique
-- ✅ Documentation API complète
-- ✅ Architecture détaillée
-- ✅ Guide d'utilisation
-- ✅ Exemples de code
+- Documentation API complète
+- Architecture détaillée
+- Guide d'utilisation
+- Exemples de code
 
 ### C4.2.1 - Logging des anomalies
-- ✅ Logging structuré
-- ✅ Détection d'erreurs
-- ✅ Traçabilité complète
+- Logging structuré
+- Détection d'erreurs
+- Traçabilité complète
 
 ## 🤝 Contribution
 

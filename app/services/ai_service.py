@@ -45,7 +45,7 @@ class AIService:
                 "stream": False
             }
             
-            logger.info(f"🚀 Appel à l'IA avec timeout: {self.timeout}s")
+            logger.info(f"Appel à l'IA avec timeout: {self.timeout}s")
             logger.info(f"📡 URL: {url}")
             logger.info(f"🤖 Modèle: {self.model}")
             
@@ -56,16 +56,16 @@ class AIService:
                 ai_response = response.json()
                 response_text = ai_response.get("response", "")
                 
-                logger.info(f"✅ Réponse IA reçue en {len(response_text)} caractères")
+                logger.info(f"Réponse IA reçue en {len(response_text)} caractères")
                 
                 program_data = self._parse_ai_response(response_text)
                 
                 logger.info("=" * 80)
-                logger.info("🔍 PROMPT COMPLET ENVOYÉ À L'IA / COMPLETE PROMPT SENT TO AI:")
+                logger.info("PROMPT COMPLET ENVOYÉ À L'IA / COMPLETE PROMPT SENT TO AI:")
                 logger.info("=" * 80)
                 logger.info(prompt)
                 logger.info("=" * 80)
-                logger.info(f"📊 RÉPONSE IA COMPLÈTE / COMPLETE AI RESPONSE:")
+                logger.info(f"RÉPONSE IA COMPLÈTE / COMPLETE AI RESPONSE:")
                 logger.info("=" * 80)
                 logger.info(response_text)
                 logger.info("=" * 80)
@@ -76,10 +76,10 @@ class AIService:
             logger.error(f"⏰ TIMEOUT: L'IA n'a pas répondu dans les {self.timeout}s alloués")
             raise Exception(f"Timeout de l'IA après {self.timeout}s")
         except httpx.HTTPStatusError as e:
-            logger.error(f"❌ Erreur HTTP {e.response.status_code}: {e.response.text}")
+            logger.error(f"Erreur HTTP {e.response.status_code}: {e.response.text}")
             raise Exception(f"Erreur HTTP {e.response.status_code}")
         except Exception as e:
-            logger.error(f"❌ Erreur inattendue: {str(e)}")
+            logger.error(f"Erreur inattendue: {str(e)}")
             raise Exception(f"Erreur de communication avec l'IA: {str(e)}")
     
     async def test_connection(self, test_prompt: str) -> str:
