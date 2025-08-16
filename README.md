@@ -81,7 +81,7 @@ Une fois le service démarré, la documentation est disponible à :
 - **ReDoc** : http://localhost:8000/redoc
 - **Documentation technique** : `docs/API_DOCUMENTATION.md`
 
-## 🧪 Tests
+## Tests
 
 ### Tests unitaires (C2.2.2)
 ```bash
@@ -190,7 +190,7 @@ public class ExternalAIService {
 }
 ```
 
-## 🐳 Docker Compose
+## Docker Compose
 
 Pour déployer l'ensemble du projet :
 
@@ -275,7 +275,7 @@ Les logs sont disponibles dans la console et incluent :
 - Détection d'erreurs
 - Traçabilité complète
 
-## 🤝 Contribution
+## Contribution
 
 1. Fork le projet
 2. Créer une branche feature
@@ -283,6 +283,6 @@ Les logs sont disponibles dans la console et incluent :
 4. Pousser vers la branche
 5. Ouvrir une Pull Request
 
-## 📄 Licence
+## Licence
 
 Ce projet fait partie de Muscul IA. 
