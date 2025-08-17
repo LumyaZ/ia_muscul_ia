@@ -12,6 +12,7 @@ def build_training_program_prompt(user_profile: Dict[str, Any]) -> str:
         str: Prompt personnalisé pour l'IA / Personalized prompt for AI
     """
     
+    # Extraction et traduction des données utilisateur
     age = user_profile.get('age', 'N/A')
     gender = user_profile.get('gender', 'N/A')
     weight = user_profile.get('weight', 'N/A')
@@ -24,73 +25,149 @@ def build_training_program_prompt(user_profile: Dict[str, Any]) -> str:
     training_preference = user_profile.get('training_preference', 'N/A')
     body_fat_percentage = user_profile.get('body_fat_percentage', 'N/A')
     
+    # Traduction des niveaux d'expérience
+    experience_translation = {
+        'Débutant': 'beginner',
+        'Intermédiaire': 'intermediate', 
+        'Avancé': 'advanced',
+        'Expert': 'expert'
+    }
+    
+    # Traduction des objectifs
+    goal_translation = {
+        'Prise de masse': 'muscle_gain',
+        'Perte de poids': 'weight_loss',
+        'Force': 'strength',
+        'Endurance': 'endurance',
+        'Tonification': 'toning',
+        'Réhabilitation': 'rehabilitation',
+        'Performance sportive': 'sports_performance'
+    }
+    
+    # Traduction des préférences d'entraînement
+    preference_translation = {
+        'Musculation': 'strength_training',
+        'Cardio': 'cardio',
+        'CrossFit': 'crossfit',
+        'Yoga': 'yoga',
+        'Pilates': 'pilates',
+        'Fonctionnel': 'functional_training'
+    }
+    
+    # Traduction de l'équipement
+    equipment_translation = {
+        'Salle de sport complète': 'full_gym',
+        'Équipement basique': 'basic_equipment',
+        'Poids libres': 'free_weights',
+        'Machines': 'machines',
+        'Sans équipement': 'bodyweight_only',
+        'Équipement maison': 'home_equipment'
+    }
+    
+    # Application des traductions
+    translated_experience = experience_translation.get(experience_level, experience_level.lower())
+    translated_goal = goal_translation.get(main_goal, main_goal.lower())
+    translated_preference = preference_translation.get(training_preference, training_preference.lower())
+    translated_equipment = equipment_translation.get(equipment, equipment.lower())
+    
+    # Calcul du BMI
     bmi = "N/A"
     if isinstance(weight, (int, float)) and isinstance(height, (int, float)) and height > 0:
         height_m = height / 100
         bmi = round(weight / (height_m ** 2), 1)
     
+    # Détermination de la fréquence et durée des sessions
+    sessions_per_week = 3
+    if '3 fois' in str(session_frequency):
+        sessions_per_week = 3
+    elif '4 fois' in str(session_frequency):
+        sessions_per_week = 4
+    elif '5 fois' in str(session_frequency):
+        sessions_per_week = 5
+    elif '6 fois' in str(session_frequency):
+        sessions_per_week = 6
+    
+    session_duration_minutes = 60
+    if '45' in str(session_duration):
+        session_duration_minutes = 45
+    elif '90' in str(session_duration):
+        session_duration_minutes = 90
+    elif '120' in str(session_duration):
+        session_duration_minutes = 120
+    
     return f"""
-Tu es un expert fitness français. Génère un programme d'entraînement personnalisé.
+You are an expert fitness trainer. Generate a personalized training program in JSON format for:
 
-PROFIL UTILISATEUR COMPLET / COMPLETE USER PROFILE:
-- Âge: {age} ans, Genre: {gender}
-- Poids: {weight}kg, Taille: {height}cm, IMC: {bmi}
-- Niveau: {experience_level}, Objectif: {main_goal}
-- Fréquence: {session_frequency}, Durée: {session_duration}
-- Équipement: {equipment}
-- Préférence: {training_preference}
-- % Graisse corporelle: {body_fat_percentage}
+PROFILE:
+- Age: {age} years old
+- Gender: {gender}
+- Experience Level: {translated_experience} (translated from: {experience_level})
+- Main Goal: {translated_goal} (translated from: {main_goal})
+- Training Preference: {translated_preference} (translated from: {training_preference})
+- Available Equipment: {translated_equipment} (translated from: {equipment})
+- Session Frequency: {sessions_per_week} times per week
+- Session Duration: {session_duration_minutes} minutes
+- BMI: {bmi}
 
-RÈGLES DE TRADUCTION / TRANSLATION RULES:
-- Niveaux: {experience_level} → Débutant/Intermédiaire/Avancé
-- Objectifs: {main_goal} → Perte de Poids/Prise de Muscle/Maintien/Performance/Fitness Général
-- Équipement: {equipment} → Poids du corps/Haltères/Matériel complet
-- Fréquence: {session_frequency} → 1-2/3-4/5+ sessions/semaine
-- Durée: {session_duration} → 30/45/60 minutes
+REQUIREMENTS:
+- Create a {translated_experience}-level program
+- Focus on {translated_goal}
+- Use {translated_equipment} equipment
+- Include 4-6 exercises per session
+- Adapt sets/reps based on experience level
+- Ensure safety and progression
 
-ADAPTATIONS SPÉCIFIQUES / SPECIFIC ADAPTATIONS:
-- Si IMC > 25: Privilégier cardio et exercices poids du corps
-- Si niveau débutant: Exercices simples, progression douce
-- Si niveau avancé: Exercices complexes, intensité élevée
-- Si objectif perte de poids: Cardio + musculation
-- Si objectif prise de muscle: Musculation + nutrition
+RESPOND ONLY WITH VALID JSON starting with {{ and ending with }}.
 
-RÉPONDS UNIQUEMENT AVEC CE JSON / RESPOND ONLY WITH THIS JSON:
-
+REQUIRED FORMAT:
 {{
-    "name": "Programme [OBJECTIF_TRADUIT] [NIVEAU_TRADUIT]",
-    "description": "Programme personnalisé pour {main_goal} niveau {experience_level}, adapté à votre profil ({age} ans, {weight}kg, {height}cm). Inclut {session_frequency} sessions de {session_duration} minutes par semaine.",
-    "category": "[CATÉGORIE_ADAPTÉE]",
-    "difficulty_level": "[NIVEAU_TRADUIT]",
-    "target_audience": "Niveau [NIVEAU_TRADUIT] - {age} ans, {gender}",
-    "duration_weeks": 6,
-    "sessions_per_week": [NOMBRE_SESSIONS],
-    "estimated_duration_minutes": [DURÉE_MINUTES],
-    "equipment_required": "[ÉQUIPEMENT_TRADUIT]",
+    "name": "Programme {translated_goal} - {translated_experience}",
+    "description": "Programme personnalisé {translated_goal} pour {gender} de {age} ans, niveau {translated_experience}",
+    "category": "{translated_preference}",
+    "difficulty_level": "{translated_experience}",
+    "target_audience": "{translated_experience} level - {age} years old",
+    "duration_weeks": 8,
+    "sessions_per_week": {sessions_per_week},
+    "estimated_duration_minutes": {session_duration_minutes},
+    "equipment_required": "{translated_equipment}",
     "exercises": [
         {{
-            "name": "Squats",
-            "sets": 3,
-            "reps": "10-12",
-            "rest": "90s",
-            "notes": "Exercice de base pour renforcer les jambes"
-        }},
-        {{
-            "name": "Pompes",
-            "sets": 3,
-            "reps": "8-10",
-            "rest": "90s",
-            "notes": "Développe la force du haut du corps"
-        }},
-        {{
-            "name": "Gainage",
-            "sets": 3,
-            "reps": "30s",
-            "rest": "60s",
-            "notes": "Renforce le core et améliore la posture"
+            "name": "Exercise Name in French",
+            "description": "Description in French",
+            "muscle_group": "MUSCLE_GROUP",
+            "equipment": "EQUIPMENT_TYPE",
+            "difficulty_level": "{translated_experience}",
+            "sets_count": 3,
+            "reps_count": "10-12",
+            "rest": "90 seconds",
+            "notes": "Important notes in French"
         }}
     ]
 }}
+
+EXERCISE GUIDELINES:
+- Beginner: 2-3 sets, 10-15 reps, longer rest periods
+- Intermediate: 3-4 sets, 8-12 reps, moderate rest
+- Advanced: 4-5 sets, 6-10 reps, shorter rest periods
+- Expert: 5+ sets, 4-8 reps, minimal rest
+
+MUSCLE GROUPS TO COVER:
+- CHEST (pectoraux)
+- BACK (dos) 
+- LEGS (jambes)
+- SHOULDERS (épaules)
+- ARMS (bras)
+- CORE (abdominaux)
+
+EQUIPMENT TYPES:
+- BODYWEIGHT (poids du corps)
+- DUMBBELLS (haltères)
+- BARBELL (barre)
+- MACHINE (machine)
+- RESISTANCE_BANDS (élastiques)
+- CARDIO (cardio)
+
+IMPORTANT: Ensure all exercise names and descriptions are in French, but use English for technical terms like muscle groups and equipment types.
 """
 
 def build_simple_test_prompt() -> str:
